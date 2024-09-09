@@ -18,12 +18,6 @@ quotesRouter.get('/random', (req, res, next) => {
   res.send(quoteResponse);
 });
 
-// Function to take an array of quote objects and flatten to an array of just quotes
-const flattenQuoteArray = (accumulator, currentValue) => {
-    accumulator.push(currentValue.quote);
-    return accumulator;
-  };
-
 // Route for getQuoteByPerson API
 // Path: GET /api/quotes
 // Optional query paramter person, return all quotes if person is not provided
