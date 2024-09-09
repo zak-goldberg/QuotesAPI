@@ -42,8 +42,7 @@ quotesRouter.get('/', (req, res, next) => {
     if (allNames.indexOf(queryPerson) !== -1) {
       // filter to quote objects associated with the name and reduce into a single array to return
       const quotesByName = quotes
-        .filter((element) => element.person == queryPerson)
-        .reduce(flattenQuoteArray, []);
+        .filter((element) => element.person == queryPerson);
       responseObject.quotes = quotesByName;
       res.send(responseObject);
     } else {
@@ -53,7 +52,7 @@ quotesRouter.get('/', (req, res, next) => {
   } else {
     // if no person specified, return all quotes
     // reduce into a single array of just quotes
-    const allQuotes = quotes.reduce(flattenQuoteArray, []);
+    const allQuotes = quotes;
     responseObject.quotes = allQuotes;
     res.send(responseObject);
   }
