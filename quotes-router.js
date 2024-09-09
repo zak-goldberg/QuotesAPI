@@ -9,7 +9,7 @@ const { getRandomElement } = require('./utils');
 const quotesRouter = express.Router();
 
 // Route for getRandomQuote API
-// Path: /api/quotes/random
+// Path: GET /api/quotes/random
 quotesRouter.get('/random', (req, res, next) => {
   const randomQuoteObject = getRandomElement(quotes);
   const quoteResponse = {
@@ -25,8 +25,9 @@ const flattenQuoteArray = (accumulator, currentValue) => {
   };
 
 // Route for getQuoteByPerson API
-// Path: /api/quotes
-// Optional query paramter person
+// Path: GET /api/quotes
+// Optional query paramter person, return all quotes if person is not provided
+// Pass an empty array if the person is not included in the array
 quotesRouter.get('/', (req, res, next) => {
   const responseObject = {};
 // Check if there are query parameters
@@ -56,6 +57,28 @@ quotesRouter.get('/', (req, res, next) => {
     responseObject.quotes = allQuotes;
     res.send(responseObject);
   }
+});
+
+// Route for createQuote API
+// Path: POST /api/quotes
+// New quotes will be passed in a query string with two properties: quote with the quote text itself, and person with the person who is credited with saying the quote.
+// This route should verify that both properties exist in the request query string and send a 400 response if it does not.
+quotesRouter.post('/', (req, res, next) => {
+  if (req.query.person && req.query.quote) {
+    const newQuotePerson = req.query.person;
+    const newQuoteText = req.query.quote;
+    const newQuoteObj = {
+      quote: newQuoteText,
+      person: newQuotePerson
+    };
+    quotes.push(newQuoteObj);
+    const newQuoteRes = {
+      quote: newQuoteObj
+    };
+    res.send(newQuoteRes);
+  } else {
+    res.status(400).send('Please provide a valid person and quote.');
+  };
 });
 
 // Export quotes router
